@@ -10,6 +10,11 @@ section=commands
 caption=Number Utils\Insert Numbers...
 method=dlg_insert_numbers
 
+[item3]
+section=commands
+caption=Number Utils\Carets Numbering...
+method=dlg_carets_num
+
 [item30]
 section=commands
 caption=Number Utils\Convert decimal/Roman, show in statusbar
