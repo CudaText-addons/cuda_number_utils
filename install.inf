@@ -5,6 +5,11 @@ type=cudatext-plugin
 subdir=cuda_number_utils
 homepage=https://github.com/CudaText-addons/cuda_number_utils
 
+[item1]
+section=commands
+caption=Number Utils\Insert Numbers...
+method=dlg_insert_numbers
+
 [item30]
 section=commands
 caption=Number Utils\Convert decimal/Roman, show in statusbar

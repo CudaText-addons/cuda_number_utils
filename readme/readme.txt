@@ -1,6 +1,15 @@
 plugin for CudaText.
 it is several plugins merged, which give commands to work with numbers.
 
+
+Insert Numbers
+--------------
+dialog to insert numbers: from starting number, with increment (default 1), with prefix/suffix strings.
+- only one caret allowed.
+- if selection exists, then selected lines will be numbered, at line start.
+- if no selection, then "repeat counter" field is enabled in dialog, numbers are inserted at start of caret's line.
+
+
 Romanize
 --------
 converts number (in the current editor under first caret) between decimal and Roman formats.
