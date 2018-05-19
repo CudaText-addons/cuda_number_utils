@@ -4,4 +4,5 @@ merged plugins:
   - Carets Numbering
   - Insert Numbers
   - Romanize
-  - NumToWords
+  - Num to Words
+  - Num to Words Propis
