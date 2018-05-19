@@ -1,0 +1,16 @@
+[info]
+title=Number Utils
+desc=Commands for numbers: insert numbers, convert to Romans, etc
+type=cudatext-plugin
+subdir=cuda_number_utils
+homepage=https://github.com/CudaText-addons/cuda_number_utils
+
+[item30]
+section=commands
+caption=Number Utils\Convert decimal/Roman, show in statusbar
+method=dec_roman_show
+
+[item31]
+section=commands
+caption=Number Utils\Convert decimal/Roman, replace in editor
+method=dec_roman_replace
