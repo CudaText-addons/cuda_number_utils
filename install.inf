@@ -1,6 +1,6 @@
 [info]
 title=Number Utils
-desc=Commands for numbers: insert row of numbers, convert to Romans, convert to textual form, etc
+desc=Commands for numbers: insert row of numbers, convert to text or Romans, etc.
 type=cudatext-plugin
 subdir=cuda_number_utils
 homepage=https://github.com/CudaText-addons/cuda_number_utils
@@ -17,12 +17,12 @@ method=dlg_carets_num
 
 [item20]
 section=commands
-caption=Number Utils\Convert decimal/Roman, show in statusbar
+caption=Number Utils\Roman numbers\Convert decimal/roman, show in statusbar
 method=dec_roman_show
 
 [item21]
 section=commands
-caption=Number Utils\Convert decimal/Roman, replace in editor
+caption=Number Utils\Roman numbers\Convert decimal/roman, replace in editor
 method=dec_roman_replace
 
 [item51]

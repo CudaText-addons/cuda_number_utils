@@ -4,8 +4,8 @@ from cudatext import *
 from .word_proc import *
 from .num2words import num2words, CONVERTER_CLASSES as langs
 
-ini_fn = 'cuda_number_utils.ini'
-ini_section = 'num2words'
+ini_fn = 'plugins.ini'
+ini_section = 'number2words'
 ini_key_lang = 'lang'
 
 
