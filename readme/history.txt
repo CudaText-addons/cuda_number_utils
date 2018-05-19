@@ -1,4 +1,7 @@
 
 2018.05.19
-initial
-merged 3 plugins: Carets Numbering, Insert Numbers, Romanize
+merged plugins: 
+  - Carets Numbering
+  - Insert Numbers
+  - Romanize
+  - NumToWords

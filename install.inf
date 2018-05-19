@@ -15,12 +15,27 @@ section=commands
 caption=Number Utils\Carets Numbering...
 method=dlg_carets_num
 
-[item30]
+[item20]
 section=commands
 caption=Number Utils\Convert decimal/Roman, show in statusbar
 method=dec_roman_show
 
-[item31]
+[item21]
 section=commands
 caption=Number Utils\Convert decimal/Roman, replace in editor
 method=dec_roman_replace
+
+[item51]
+section=commands
+caption=Number Utils\Number to words\Number to words, new tab
+method=num2word_new_tab
+
+[item52]
+section=commands
+caption=Number Utils\Number to words\Number to words, replace
+method=num2word_replace
+
+[item53]
+section=commands
+caption=Number Utils\Number to words\Select language...
+method=num2word_langs
