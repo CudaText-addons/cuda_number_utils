@@ -1,5 +1,5 @@
 plugin for CudaText.
-it is several plugins merged, which give commands to work with numbers.
+merged several plugins, which give number-related commands.
 
 
 Insert Numbers
@@ -8,6 +8,27 @@ dialog to insert numbers: from starting number, with increment (default 1), with
 - only one caret allowed.
 - if selection exists, then selected lines will be numbered, at line start.
 - if no selection, then "repeat counter" field is enabled in dialog, numbers are inserted at start of caret's line.
+
+
+Carets Numbering
+----------------
+works only with multi-carets, allows to insert increasing/decreasing numbers in positions of all multi-carets.
+for example, you can insert:
+- 00, 01, 02, 03...
+- 0030, 0031, 0032...
+- 100, 95, 90, 85...
+
+gives dialog to input parameters:
+- Starting number (default is 1)
+- Increment (use value<0 to make decreasing numbers)
+- Number of digits, ie width of numbers (if it's 3, numbers can be 001, 002, 003...)
+- Text before numbers (prefix)
+- Text after numbers (suffix)
+- Base: 
+  - "d": decimal format
+  - "x": hex format
+  - "o": octal format
+  - "r": Roman notation
 
 
 Romanize
@@ -22,7 +43,6 @@ result is not nice for numbers >=4000.
 gives commands:
 - Show: convert number between decimal/Roman, and show it in the statusbar
 - Replace: the same, and replace number in the editor
-
 
 
 author: Alexey (CudaText)
