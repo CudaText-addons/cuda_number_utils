@@ -39,3 +39,24 @@ method=num2word_replace
 section=commands
 caption=Number Utils\Number to words\Select language...
 method=num2word_langs
+
+
+[item100]
+section=commands
+caption=Number Utils\Number to words, Ru\Number to words, new tab
+method=num2ru_new_tab
+
+[item101]
+section=commands
+caption=Number Utils\Number to words, Ru\Number to words, replace
+method=num2ru_replace
+
+[item103]
+section=commands
+caption=Number Utils\Number to words, Ru\Rubles to words, new tab
+method=num2ru_rubles_new_tab
+
+[item104]
+section=commands
+caption=Number Utils\Number to words, Ru\Rubles to words, replace
+method=num2ru_rubles_replace
