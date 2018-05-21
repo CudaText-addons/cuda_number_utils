@@ -1,4 +1,7 @@
 
+2018.05.21
++ add: Insert Numbers: added option "Number base" (dec/hex/octal/romans)
+
 2018.05.19
 merged plugins: 
   - Carets Numbering
