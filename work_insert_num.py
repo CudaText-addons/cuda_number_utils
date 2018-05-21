@@ -61,8 +61,8 @@ def dialog_insert_numbers():
         
     text_repeat = 'repeat %d'%n_repeat if not use_sel else 'selection'
     text_onlytext = 'only text' if b_onlytext else ''
-    print('Insert numbers: prefix "%s", start %d, digits %d, suffix "%s", %s, %s' % \
-          (s_prefix, n_startnum, n_digits, s_suffix, text_repeat, text_onlytext))
+    #print('Insert numbers: prefix "%s", start %d, digits %d, suffix "%s", %s, %s' % \
+    #      (s_prefix, n_startnum, n_digits, s_suffix, text_repeat, text_onlytext))
     s_format_str = '%0'+str(n_digits)+'d'
                                                             
     if use_sel:
