@@ -15,6 +15,11 @@ section=commands
 caption=Number Utils\Carets Numbering...
 method=dlg_carets_num
 
+[item4]
+section=commands
+caption=Number Utils\Base Converter...
+method=dlg_base_converter
+
 [item20]
 section=commands
 caption=Number Utils\Roman numbers\Convert decimal/roman, show in statusbar

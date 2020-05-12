@@ -3,6 +3,7 @@ from .work_carets_num import *
 from .work_romans import *
 from .work_num2words import *
 from .work_num2ruwords import *
+from .work_bases import BaseConverter
 
 class Command:
     def dlg_insert_numbers(self):
@@ -10,6 +11,10 @@ class Command:
 
     def dlg_carets_num(self):
         dialog_carets_num()
+
+    def dlg_base_converter(self):
+        bc = BaseConverter()
+        bc.showDialog()
 
     def dec_roman_show(self):
         roman_conv(False)
