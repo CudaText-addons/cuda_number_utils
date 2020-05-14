@@ -97,8 +97,7 @@ class BaseConverter():
             'a_b': None,
             'sp_t': 3*p,
             'sp_r': p,
-            'cap': 'Preserve selections',
-            'hint': 'Keep selections after conversion',
+            'cap': 'Keep seletions after conversion',
             'en': False,
             'val': True,
             'on_mouse_enter': self.mouse_move,
@@ -107,10 +106,10 @@ class BaseConverter():
         self.msgs[n] = 'If checked, selections will be kept after conversion.'
         self.controls.append(n)
 
-        n = dlg_proc(h, DLG_CTL_ADD, 'button_ex')
+        n = dlg_proc(h, DLG_CTL_ADD, 'button')
         dlg_proc(h, DLG_CTL_PROP_SET, index=n, prop={
             'name': 'convert',
-            'w': 80,
+            'w': 100,
             'a_l': None,
             'a_t': ('bases', ']'),
             'a_r': ('keep_carets', ']'),
