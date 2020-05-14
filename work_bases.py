@@ -41,7 +41,7 @@ class BaseConverter():
         dlg_proc(self.h_dlg, DLG_SHOW_NONMODAL)
 
     def init_form(self):
-        w = 370
+        w = 400
         h = dlg_proc(0, DLG_CREATE)
         dlg_proc(h, DLG_PROP_SET, prop={
             'cap': self.title,
@@ -75,12 +75,12 @@ class BaseConverter():
         dlg_proc(h, DLG_CTL_PROP_SET, index=n, prop={
             'name': 'bases',
             'x': p,
-            'y': 0,
+            'y': p,
             'w': 130,
             'h': 130,
             'act': True,
             'en': False,
-            'items': 'Decimal\tBinary\tOctal\tHexadecimal\tHTML Color',
+            'items': 'Decimal\tBinary\tOctal\tHexadecimal\tHTML color',
             'val': 0,
             'on_mouse_enter': self.mouse_move,
             })
@@ -97,14 +97,14 @@ class BaseConverter():
             'a_b': None,
             'sp_t': 3*p,
             'sp_r': p,
-            'cap': 'Preserve carets after conversion',
-            'hint': 'Keep carets after conversion',
+            'cap': 'Preserve selections',
+            'hint': 'Keep selections after conversion',
             'en': False,
             'val': True,
             'on_mouse_enter': self.mouse_move,
             })
         self.n_chk_keep_carets = n
-        self.msgs[n] = 'If is ON the selections will keep after conversion.'
+        self.msgs[n] = 'If checked, selections will be kept after conversion.'
         self.controls.append(n)
 
         n = dlg_proc(h, DLG_CTL_ADD, 'button_ex')
@@ -117,7 +117,7 @@ class BaseConverter():
             'a_b': None,
             'sp_r': p,
             'cap': 'Convert',
-            'hint': 'Convert carets to selected base number.',
+            'hint': 'Convert numbers in selections to chosen base',
             'en': False,
             'on_change': self.btn_convert_click,
             'on_mouse_enter': self.mouse_move,
@@ -314,9 +314,9 @@ class BaseConverter():
             new_carets.append((x1, y1, x2, y2))
 
         if not new_carets:
-            self.form_msg = 'Do at least one selection.'
+            self.form_msg = 'Make text selection(s) first.'
             return False
         else:
-            self.form_msg = '%d carets to process. Non valid numbers will be skipped.' % len(new_carets)
+            self.form_msg = '%d carets to process. Not valid numbers will be skipped.' % len(new_carets)
             self.carets = new_carets
             return True
