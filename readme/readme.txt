@@ -74,5 +74,7 @@ gives commands:
 - roubles to words, replace
 
 
-author: Alexey (CudaText)
+authors:
+  Alexey Torgashin (CudaText)
+  Jairo Martinez Antonio https://github.com/Jairo-Martinez
 license: MIT

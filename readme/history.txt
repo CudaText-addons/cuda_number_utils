@@ -1,8 +1,8 @@
 
-2020.05.12
+2020.05.14
 + add: command "Base converter" which shows new dialog to convert numbers in
-selection/ multi-selections - between decimal/hex/octal/binary/HTML color
-patch by @Jairo-Martinez)
+  selection/ multi-selections, between decimal/hex/octal/binary/HTML color
+  (patch by @Jairo-Martinez)
 
 2018.05.21
 + add: Insert Numbers: added option "Number base" (dec/hex/octal/romans)
