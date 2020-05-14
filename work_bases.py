@@ -1,10 +1,13 @@
 import datetime
 import os
+import re
 
 import cudatext_keys as keys
 
 from enum import Enum
+
 from cudatext import *
+from cudax_lib import int_to_html_color, html_color_to_int
 
 def log(s):
     # Change conditional to True to log messages in a Debug process
@@ -16,22 +19,23 @@ def log(s):
 
 # Index for number bases in radiogroup
 class Base(Enum):
-    binary = 0
-    octal = 1
-    decimal = 2
+    decimal = 0
+    binary = 1
+    octal = 2
     hexadecimal = 3
+    html = 4
 
 class BaseConverter():
 
     def __init__(self):
         self.tick = 150
         self.title = 'Number Base Converter'
-        self.opt = -1
         self.carets = None
         self.msgs = {}
         self.controls = []
         self.h_dlg = self.init_form()
         self.form_msg = ''
+        self.suffixes = ['0b', '0o', '0x', '#']
 
     def showDialog(self):
         dlg_proc(self.h_dlg, DLG_SHOW_NONMODAL)
@@ -42,7 +46,7 @@ class BaseConverter():
         dlg_proc(h, DLG_PROP_SET, prop={
             'cap': self.title,
             'w': w,
-            'h': 170,
+            'h': 195,
             'border': DBORDER_TOOL,
             'topmost': True,
             'keypreview': True,
@@ -52,8 +56,7 @@ class BaseConverter():
             'on_mouse_enter': self.mouse_move,
             })
 
-        x = p = 6
-        y = 10
+        p = 6
 
         n = dlg_proc(h, DLG_CTL_ADD, 'statusbar')
         dlg_proc(h, DLG_CTL_PROP_SET, index=n, prop={
@@ -74,11 +77,11 @@ class BaseConverter():
             'x': p,
             'y': 0,
             'w': 130,
+            'h': 130,
             'act': True,
             'en': False,
-            'items': 'Binary\tOctal\tDecimal\tHexadecimal',
+            'items': 'Decimal\tBinary\tOctal\tHexadecimal\tHTML Color',
             'val': 0,
-            # 'on_change': self.rg_change,
             'on_mouse_enter': self.mouse_move,
             })
         self.n_rg_base = n
@@ -87,27 +90,13 @@ class BaseConverter():
 
         n = dlg_proc(h, DLG_CTL_ADD, 'check')
         dlg_proc(h, DLG_CTL_PROP_SET, index=n, prop={
-            'name': 'html_format',
-            'cap': 'Use HTML format',
-            'hint': 'The final hexadecimal values can be used in HTML/CSS as colors',
-            'a_l': ('', '['),
-            'a_t': ('bases', ']'),
-            'a_r': None,
-            'a_b': None,
-            'sp_l': 5*p,
-            'sp_t': p,
-            'en': False,
-            'on_mouse_enter': self.mouse_move,
-            })
-        self.n_chk_html = n
-        self.msgs[n] = 'In Hexadecimal replace 0x with #.'
-
-        n = dlg_proc(h, DLG_CTL_ADD, 'check')
-        dlg_proc(h, DLG_CTL_PROP_SET, index=n, prop={
             'name': 'keep_carets',
-            'w': 80,
-            'x': 170,
-            'y': 20,
+            'a_l': None,
+            'a_t': ('bases', '['),
+            'a_r': ('', ']'),
+            'a_b': None,
+            'sp_t': 3*p,
+            'sp_r': p,
             'cap': 'Preserve carets after conversion',
             'hint': 'Keep carets after conversion',
             'en': False,
@@ -123,9 +112,9 @@ class BaseConverter():
             'name': 'convert',
             'w': 80,
             'a_l': None,
-            'a_t': None,
+            'a_t': ('bases', ']'),
             'a_r': ('keep_carets', ']'),
-            'a_b': ('bases', ']'),
+            'a_b': None,
             'sp_r': p,
             'cap': 'Convert',
             'hint': 'Convert carets to selected base number.',
@@ -138,22 +127,6 @@ class BaseConverter():
         self.controls.append(n)
 
         return h
-
-    def timer_update(self, tag='', info=''):
-        # log('Timer Update')
-        opt = int(dlg_proc(self.h_dlg, DLG_CTL_PROP_GET,
-                           index=self.n_rg_base)['val'])
-        if self.opt == opt:
-            return
-
-        self.opt = opt
-
-        if self.opt == Base.hexadecimal.value:
-            enable = True
-        else:
-            enable = False
-
-        self.set_prop(self.n_chk_html, 'en', enable)
 
     def upd_sb_text(self, text):
         statusbar_proc(self.sb_id, STATUSBAR_SET_CELL_TEXT, tag=self.sb_tag,
@@ -177,8 +150,6 @@ class BaseConverter():
 
     def form_show(self, id_dlg, id_ctl, data='', info=''):
         if self.validate_carets():
-            timer_proc(TIMER_START, self.timer_update, self.tick, tag='')
-
             for id in self.controls:
                 self.set_prop(id, 'en', True)
 
@@ -186,18 +157,16 @@ class BaseConverter():
 
     def form_hide(self, id_dlg, id_ctl, data='', info=''):
         ed.focus()
-        timer_proc(TIMER_STOP, self.timer_update, 0)
         dlg_proc(self.h_dlg, DLG_HIDE)
 
     def btn_convert_click(self, id_dlg, id_ctl, data='', info=''):
-        timer_proc(TIMER_STOP, self.timer_update, 0)
         carets = []
 
         keep = int(dlg_proc(self.h_dlg, DLG_CTL_PROP_GET,
                            index=self.n_chk_keep_carets)['val'])
 
-        html = int(dlg_proc(self.h_dlg, DLG_CTL_PROP_GET,
-                           index=self.n_chk_html)['val'])
+        opt = int(dlg_proc(self.h_dlg, DLG_CTL_PROP_GET,
+                           index=self.n_rg_base)['val'])
 
         one = self.carets[0]
 
@@ -207,41 +176,67 @@ class BaseConverter():
         for caret in self.carets:
             try:
                 text = ed.get_text_substr(*caret).strip()
-                base = self.get_base(text)
+                res = self.get_suffix_number(text)
 
-                if not base:
+                if not res:
                     raise ValueError('Not found a correct base in caret')
 
-                try:
-                    new = old = int(text, base)
-                except Exception as e:
-                    raise ValueError('The number "%s" is not valid with base %d' %
-                                     (text, base))
+                suffix, number = res
 
-                if self.opt == Base.binary.value and base != 2:
+                new = old = -1
+
+                try:
+                    if suffix in self.suffixes[:3]:
+                        # 0b, 0o or 0x
+                        base = self.get_base(suffix)
+                        old = int(number, base)
+                    elif not suffix:
+                        # Decimal value
+                        old = int(number)
+                    elif suffix == self.suffixes[3]:
+                        # Use cudax_lib funtions
+                        old = html_color_to_int(text)
+                    else:
+                        old = None
+
+                    if not old:
+                        raise ValueError('%s is a non valid number' % text)
+
+                    new = old
+
+                except Exception as e:
+                    raise ValueError('The number "%s" is not valid with base %s' %
+                                     (number, suffix))
+
+                if opt == Base.binary.value and suffix != self.suffixes[0]:
                     try:
                         new = bin(old)
                     except Exception as e:
                         raise ValueError('%s cannot convert to Binary.' %
                                          str(old))
 
-                if self.opt == Base.octal.value and base != 8:
+                if opt == Base.octal.value and suffix != self.suffixes[1]:
                     try:
                         new = oct(old)
                     except Exception as e:
                         raise ValueError('%s cannot convert to Octal.' %
                                          str(old))
 
-                if self.opt == Base.hexadecimal.value and base != 16:
+                if opt == Base.hexadecimal.value and suffix != self.suffixes[2]:
                     try:
                         new = hex(old)
-                        if html:
-                            new = new.replace('0x', '#').upper()
                     except Exception as e:
                         raise ValueError('%s cannot convert to Hexadecimal.' %
                                          str(old))
 
-                continue_dec = self.opt == Base.decimal.value and base != 10
+                if opt == Base.html.value and suffix != self.suffixes[3]:
+                    try:
+                        new = int_to_html_color(old)
+                    except Exception as e:
+                        raise ValueError('%s cannot convert to Hexadecimal.' %
+                                         str(old))
+
+                continue_dec = opt == Base.decimal.value and suffix
 
                 new = str(new)
                 old = str(old)
@@ -265,24 +260,30 @@ class BaseConverter():
 
         self.form_hide(id_dlg, id_ctl, data, info)
 
-    def get_base(self, text):
-        suffix = text[:2]
-        number = text[2:]
+    def get_suffix_number(self, text):
+        bases = '|'.join(self.suffixes)
+        pattern = r'\A(?P<suffix>' + bases + r')?(?P<number>.+)'
 
-        if suffix == '0b':
+        match = re.search(pattern, text)
+        if not match:
+            return
+
+        suffix = match.group('suffix') if match.group('suffix') else None
+        number = match.group('number') if match.group('number') else None
+
+        return suffix, number
+
+    def get_base(self, suffix):
+        if suffix == self.suffixes[0]:
             return 2
-        if suffix == '0o':
+
+        if suffix == self.suffixes[1]:
             return 8
-        if suffix == '0x':
+
+        if suffix == self.suffixes[2]:
             return 16
-        if text.isdigit():
-            return 10
 
-        return
-
-    def rg_change(self, id_dlg, id_ctl, data='', info=''):
-        # TODO: Waiting for API change to reach on_change events.
-        pass
+        return None
 
     def mouse_move(self, id_dlg, id_ctl, data='', info=''):
         if id_ctl in self.msgs:
@@ -299,8 +300,7 @@ class BaseConverter():
             x1, y1, x2, y2 = caret
 
             if (x2, y2) == (-1, -1):
-                x2 = x1
-                y2 = y1
+                x2, y2 = x1, y1
                 continue
 
             if (y1, x1) > (y2, x2):
@@ -313,7 +313,7 @@ class BaseConverter():
 
             new_carets.append((x1, y1, x2, y2))
 
-        if not len(new_carets):
+        if not new_carets:
             self.form_msg = 'Do at least one selection.'
             return False
         else:
