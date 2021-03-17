@@ -4,11 +4,14 @@ from cudatext import *
 from .pytils import numeral
 from .word_proc import *
 
+from cudax_lib import get_translation
+_ = get_translation(__file__)  # I18N
+
 
 def do_num_words(mode, rubles):
     x0, y0, nlen, text = get_word_info()
     if not text:
-        msg_status('Place caret under number')
+        msg_status(_('Place caret under number'))
         return
                    
     try:            
@@ -18,7 +21,7 @@ def do_num_words(mode, rubles):
             text = text.replace(',', '.')
             num = float(text)
         except:
-            msg_status('Place caret under number')
+            msg_status(_('Place caret under number'))
             return
 
     if rubles:

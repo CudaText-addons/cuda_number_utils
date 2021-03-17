@@ -9,6 +9,10 @@ from enum import Enum
 from cudatext import *
 from cudax_lib import int_to_html_color, html_color_to_int
 
+from cudax_lib import get_translation
+_ = get_translation(__file__)  # I18N
+
+
 def log(s):
     # Change conditional to True to log messages in a Debug process
     if False:
@@ -29,7 +33,7 @@ class BaseConverter():
 
     def __init__(self):
         self.tick = 150
-        self.title = 'Number Base Converter'
+        self.title = _('Number Base Converter')
         self.carets = None
         self.msgs = {}
         self.controls = []
@@ -41,7 +45,8 @@ class BaseConverter():
         dlg_proc(self.h_dlg, DLG_SHOW_NONMODAL)
 
     def init_form(self):
-        w = 400
+        # w = 400 -- too small for translations (fm)
+        w = 500
         h = dlg_proc(0, DLG_CREATE)
         dlg_proc(h, DLG_PROP_SET, prop={
             'cap': self.title,
@@ -80,12 +85,12 @@ class BaseConverter():
             'h': 130,
             'act': True,
             'en': False,
-            'items': 'Decimal\tBinary\tOctal\tHexadecimal\tHTML color',
+            'items': _('Decimal\tBinary\tOctal\tHexadecimal\tHTML color'),
             'val': 0,
             'on_mouse_enter': self.mouse_move,
             })
         self.n_rg_base = n
-        self.msgs[n] = 'Select with click or using Up-Down keys.'
+        self.msgs[n] = _('Select with click or using Up-Down keys.')
         self.controls.append(n)
 
         n = dlg_proc(h, DLG_CTL_ADD, 'check')
@@ -97,13 +102,13 @@ class BaseConverter():
             'a_b': None,
             'sp_t': 3*p,
             'sp_r': p,
-            'cap': 'Keep seletions after conversion',
+            'cap': _('Keep selections after conversion'),
             'en': False,
             'val': True,
             'on_mouse_enter': self.mouse_move,
             })
         self.n_chk_keep_carets = n
-        self.msgs[n] = 'If checked, selections will be kept after conversion.'
+        self.msgs[n] = _('If checked, selections will be kept after conversion.')
         self.controls.append(n)
 
         n = dlg_proc(h, DLG_CTL_ADD, 'button')
@@ -115,14 +120,14 @@ class BaseConverter():
             'a_r': ('keep_carets', ']'),
             'a_b': None,
             'sp_r': p,
-            'cap': 'Convert',
-            'hint': 'Convert numbers in selections to chosen base',
+            'cap': _('Convert'),
+            'hint': _('Convert numbers in selections to chosen base'),
             'en': False,
             'on_change': self.btn_convert_click,
             'on_mouse_enter': self.mouse_move,
             })
         self.n_btn_convert = n
-        self.msgs[n] = 'Starts the conversion process.'
+        self.msgs[n] = _('Starts the conversion process.')
         self.controls.append(n)
 
         return h
@@ -307,15 +312,15 @@ class BaseConverter():
                 y1, y2 = y2, y1
 
             if (y2 - y1) > 0:
-                self.form_msg = 'Multi-line is not allowed.'
+                self.form_msg = _('Multi-line is not allowed.')
                 return False
 
             new_carets.append((x1, y1, x2, y2))
 
         if not new_carets:
-            self.form_msg = 'Make text selection(s) first.'
+            self.form_msg = _('Make text selection(s) first.')
             return False
         else:
-            self.form_msg = '%d carets to process. Not valid numbers will be skipped.' % len(new_carets)
+            self.form_msg = _('%d carets to process. Not valid numbers will be skipped.') % len(new_carets)
             self.carets = new_carets
             return True

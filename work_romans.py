@@ -2,6 +2,10 @@ import string
 from cudatext import *
 from .romans import to_romans, from_romans
 
+from cudax_lib import get_translation
+_ = get_translation(__file__)  # I18N
+
+
 CHARS_ALL = string.digits + string.ascii_letters
 CHARS_DIGITS = string.digits
 CHARS_ROMAN = 'IVXLCDM' + 'IVXLCDM'.lower()
@@ -20,16 +24,16 @@ def roman_conv(and_replace):
     x, y, x1, y1 = carets[0]
 
     if y1>=0:
-        msg_status('Romanize: Cannot work with selection')
+        msg_status(_('Romanize: Cannot work with selection'))
         return
 
     line = ed.get_text_line(y)
     if not line or x>=len(line):
-        msg_status('Romanize: Need a number')
+        msg_status(_('Romanize: Need a number'))
         return
 
     if not line[x] in CHARS_ALL:
-        msg_status('Romanize: Need a number')
+        msg_status(_('Romanize: Need a number'))
         return
 
     n1 = x
@@ -45,11 +49,11 @@ def roman_conv(and_replace):
     elif is_roman(s_from):
         s_to = str(from_romans(s_from.upper()))
     else:
-        msg_status('Romanize: incorrect number "%s"'%s_from)
+        msg_status(_('Romanize: incorrect number "%s"')%s_from)
         return
 
     if and_replace:
         ed.set_caret(n1, y)
         ed.replace(n1, y, n2, y, s_to)
 
-    msg_status('Romanize: %s -> %s' % (s_from, s_to))
+    msg_status(_('Romanize: {} -> {}').format(s_from, s_to))

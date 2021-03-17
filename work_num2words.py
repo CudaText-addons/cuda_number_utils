@@ -4,6 +4,9 @@ from cudatext import *
 from .word_proc import *
 from .num2words import num2words, CONVERTER_CLASSES as langs
 
+from cudax_lib import get_translation
+_ = get_translation(__file__)  # I18N
+
 ini_fn = 'plugins.ini'
 ini_section = 'number2words'
 ini_key_lang = 'lang'
@@ -12,7 +15,7 @@ ini_key_lang = 'lang'
 def do_num_words(mode):
     x0, y0, nlen, text = get_word_info()
     if not text:
-        msg_status('Place caret under number')
+        msg_status(_('Place caret under number'))
         return
                    
     try:            
@@ -22,7 +25,7 @@ def do_num_words(mode):
             text = text.replace(',', '.')
             num = float(text)
         except:
-            msg_status('Place caret under number')
+            msg_status(_('Place caret under number'))
             return
 
     lang = ini_read(ini_fn, ini_section, ini_key_lang, 'en')

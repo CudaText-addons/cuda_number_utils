@@ -1,6 +1,9 @@
 from cudatext import *
 from .romans import to_romans
 
+from cudax_lib import get_translation
+_ = get_translation(__file__)  # I18N
+
 
 def _format_int(num, n_len, fmt):
     if fmt in ('d', 'x', 'o'):
@@ -14,7 +17,7 @@ def dialog_insert_numbers():
 
     carets = ed.get_carets()
     if len(carets)!=1:
-        msg_status('Cannot handle multi-carets')
+        msg_status(_('Cannot handle multi-carets'))
         return
 
     x0, y0, x1, y1 = carets[0]
@@ -23,7 +26,8 @@ def dialog_insert_numbers():
         if not ((y1>y0) or ((y1==y0) and (x1>x0))):
             x0, y0, x1, y1 = x1, y1, x0, y0
 
-    text_info = 'Specified count of lines will be inserted' if not use_sel else 'Selected lines will be changed'
+    text_info = _('Specified count of lines will be inserted') if not use_sel \
+                else _('Selected lines will be changed')
 
     id_prefix = 1
     id_startnum = 3
@@ -37,25 +41,25 @@ def dialog_insert_numbers():
     id_ok = 16
 
     c1 = chr(1)
-    res = dlg_custom('Insert Numbers', 600, 220, '\n'.join([]
-      +[c1.join(['type=label', 'cap=&Prefix:', 'pos=6,6,200,0'])]
+    res = dlg_custom(_('Insert Numbers'), 600, 220, '\n'.join([]
+      +[c1.join(['type=label', 'cap='+_('&Prefix:'), 'pos=6,6,200,0'])]
       +[c1.join(['type=edit', 'val=', 'pos=6,24,194,0'])]
-      +[c1.join(['type=label', 'cap=Start &num:', 'pos=200,6,300,0'])]
+      +[c1.join(['type=label', 'cap='+_('Start &num:'), 'pos=200,6,300,0'])]
       +[c1.join(['type=spinedit', 'val=1', 'ex0=-1000', 'ex1=1000000', 'ex2=1', 'pos=200,24,294,0'])]
-      +[c1.join(['type=label', 'cap=&Digits:', 'pos=300,6,400,0'])]
+      +[c1.join(['type=label', 'cap='+_('&Digits:'), 'pos=300,6,400,0'])]
       +[c1.join(['type=spinedit', 'val=1', 'ex0=1', 'ex1=20', 'ex2=1', 'pos=300,24,394,0'])]
-      +[c1.join(['type=label', 'cap=&Suffix:', 'pos=400,6,600,0'])]
+      +[c1.join(['type=label', 'cap='+_('&Suffix:'), 'pos=400,6,600,0'])]
       +[c1.join(['type=edit', 'val=', 'pos=400,24,594,0'])]
-      +[c1.join(['type=check', 'cap=&Use only prefix+suffix', 'pos=6,54,500,0'])]
-      +[c1.join(['type=check', 'cap=Skip &empty lines', 'pos=6,80,500,0', 'val=1', 'en='+str(int(use_sel)) ])]
-      +[c1.join(['type=check', 'cap=Insert &after leading spaces', 'pos=6,106,500,0', 'en='+str(int(use_sel)) ])]
-      +[c1.join(['type=label', 'cap=&Repeat counter:', 'en='+str(int(not use_sel)), 'pos=6,130,100,0'])]
+      +[c1.join(['type=check', 'cap='+_('&Use only prefix+suffix'), 'pos=6,54,500,0'])]
+      +[c1.join(['type=check', 'cap='+_('Skip &empty lines'), 'pos=6,80,500,0', 'val=1', 'en='+str(int(use_sel)) ])]
+      +[c1.join(['type=check', 'cap='+_('Insert &after leading spaces'), 'pos=6,106,500,0', 'en='+str(int(use_sel)) ])]
+      +[c1.join(['type=label', 'cap='+_('&Repeat counter:'), 'en='+str(int(not use_sel)), 'pos=6,130,100,0'])]
       +[c1.join(['type=spinedit', 'val=4', 'ex0=1', 'ex1=2000000', 'ex2=1', 'en='+str(int(not use_sel)), 'pos=6,150,100,0'])]
-      +[c1.join(['type=label', 'cap=Number &base:', 'pos=200,130,400,0'])]
-      +[c1.join(['type=combo_ro', 'items=Decimal\tHex\tOctal\tRomans', 'val=0', 'pos=200,150,300,0'])]
+      +[c1.join(['type=label', 'cap='+_('Number &base:'), 'pos=200,130,400,0'])]
+      +[c1.join(['type=combo_ro', 'items='+_('Decimal\tHex\tOctal\tRomans'), 'val=0', 'pos=200,150,300,0'])]
       +[c1.join(['type=label', 'cap='+text_info, 'pos=6,190,400,0'])]
-      +[c1.join(['type=button', 'cap=&OK', 'ex0=1', 'pos=400,190,494,0'])]
-      +[c1.join(['type=button', 'cap=Cancel', 'pos=500,190,594,0'])]
+      +[c1.join(['type=button', 'cap='+_('&OK'), 'ex0=1', 'pos=400,190,494,0'])]
+      +[c1.join(['type=button', 'cap='+_('Cancel'), 'pos=500,190,594,0'])]
       ))
     if res is None: return
 
@@ -73,8 +77,8 @@ def dialog_insert_numbers():
     b_afterlead = bool(int(text[id_afterlead]))
     n_base = int(text[id_base])
 
-    text_repeat = 'repeat %d'%n_repeat if not use_sel else 'selection'
-    text_onlytext = 'only text' if b_onlytext else ''
+    text_repeat = _('repeat %d')%n_repeat if not use_sel else _('selection')
+    text_onlytext = _('only text') if b_onlytext else ''
     s_format = ['d', 'x', 'o', 'r'][n_base]
 
     #print('Insert numbers: prefix "%s", start %d, digits %d, suffix "%s", %s, %s' % \
@@ -110,4 +114,4 @@ def dialog_insert_numbers():
         items += ['']
         ed.insert(0, y0, '\n'.join(items))
 
-    msg_status('Numbers inserted')
+    msg_status(_('Numbers inserted'))
