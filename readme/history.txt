@@ -1,4 +1,7 @@
 
+2021.03.17
++ add: i18n (from Markus)
+
 2020.05.14
 + add: command "Base converter" which shows new dialog to convert numbers in
   selection/ multi-selections, between decimal/hex/octal/binary/HTML color
