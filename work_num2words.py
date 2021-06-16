@@ -52,6 +52,6 @@ def num2words_replace():
 
 def num2words_langs():
     items = sorted(list(langs.keys()))
-    n = dlg_menu(MENU_LIST, '\n'.join(items))
+    n = dlg_menu(DMENU_LIST, items)
     if n is None: return
     ini_write(ini_fn, ini_section, ini_key_lang, items[n])

@@ -1,4 +1,7 @@
 
+2021.06.17
+- fix: avoid deprecated API
+
 2021.03.17
 + add: i18n (from Markus)
 
