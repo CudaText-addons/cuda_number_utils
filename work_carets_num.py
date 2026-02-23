@@ -56,13 +56,13 @@ def dialog_carets_num():
         msg_box(_('Incorrect base value entered'), MB_OK)
         return
 
-    ed.lock()
+    ed.action(EDACTION_LOCK)
     for i in range(len(carets)-1, -1, -1):
         caret = carets[i]
         num = n_start + n_inc*i
         s_num = _format_int(num, n_len, n_base)
         text = text_before + s_num.upper() + text_after
         ed.insert(caret[0], caret[1], text)
-    ed.unlock()
+    ed.action(EDACTION_UNLOCK)
 
     msg_status(_('Inserted %d numbers') % len(carets))
